@@ -25,15 +25,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
 		http.authorizeRequests()
+		.antMatchers("/home/**").permitAll() // EXCEÇÃO -> UNICA PÁGINA POSSÍVEL DE SER ACESSADA SEM ESTAR LOGADO
 		.anyRequest()
 		.authenticated()
 		.and()
 		.formLogin(form -> form
 			.loginPage("/login")
-			.defaultSuccessUrl("/home", true)
+			.defaultSuccessUrl("/usuario/pedido", true)
 			.permitAll()
 		)
-		.logout(logout -> logout.logoutUrl("/logout"));
+		.logout(logout -> 
+			logout.logoutUrl("/logout")
+			.logoutSuccessUrl("/home")
+		);
 	}
 	
 	@Override
